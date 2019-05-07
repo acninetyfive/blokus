@@ -3,56 +3,57 @@ import numpy as np
 
 class Piece:
 
-	def __init__(self, color, shape): 
+	def __init__(self, color, name): 
 		self.color = color
-		self.set_shape(shape)
+		self.set_shape(name)
+		self.name = name
 
-	def set_shape(self, shape):
-		if shape == "ONE":
+	def set_shape(self, name):
+		if name == "ONE":
 			self.shape = np.array([[1]]) * self.color
-		elif shape == "TWO":
+		elif name == "TWO":
 			self.shape = np.array([[1,1]]) * self.color
-		elif shape == "THREE":
+		elif name == "THREE":
 			self.shape = np.array([[1,1,1]]) * self.color
-		elif shape == "FOUR":
+		elif name == "FOUR":
 			self.shape = np.array([[1,1,1,1]]) * self.color
-		elif shape == "FIVE":
+		elif name == "FIVE":
 			self.shape = np.array([[1,1,1,1,1]]) * self.color
-		elif shape == "SHORT_CORNER":
+		elif name == "SHORT_CORNER":
 			self.shape = np.array([[1,1], [0,1]]) * self.color
-		elif shape == "SQUARE":
+		elif name == "SQUARE":
 			self.shape = np.array([[1,1], [1,1]]) * self.color
-		elif shape == "SHORT_T":
+		elif name == "SHORT_T":
 			self.shape = np.array([[0,1,0], [1,1,1]]) * self.color
-		elif shape == "SHORT_L":
+		elif name == "SHORT_L":
 			self.shape = np.array([[0,0,1], [1,1,1]]) * self.color
-		elif shape == "S":
+		elif name == "S":
 			self.shape = np.array([[0,1,1], [1,1,0]]) * self.color
-		elif shape == "LONG_L":
+		elif name == "LONG_L":
 			self.shape = np.array([[1,0,0,0], [1,1,1,1]]) * self.color
-		elif shape == "LONG_T":
+		elif name == "LONG_T":
 			self.shape = np.array([[0,1,0], [0,1,0], [1,1,1]]) * self.color
-		elif shape == "LONG_CORNER":
+		elif name == "LONG_CORNER":
 			self.shape = np.array([[1,0,0], [1,0,0], [1,1,1]]) * self.color
-		elif shape == "RIFLE":
+		elif name == "RIFLE":
 			self.shape = np.array([[0,1,1,1], [1,1,0,0]]) * self.color
-		elif shape == "Z":
+		elif name == "Z":
 			self.shape = np.array([[0,0,1], [1,1,1], [1,0,0]]) * self.color 
-		elif shape == "UTAH":
+		elif name == "UTAH":
 			self.shape = np.array([[1,0], [1,1], [1,1]]) * self.color
-		elif shape == "W":
+		elif name == "W":
 			self.shape = np.array([[0,1,1], [1,1,0], [1,0,0]]) * self.color 
-		elif shape == "U":
+		elif name == "U":
 			self.shape = np.array([[1,1], [1,0], [1,1]]) * self.color 
-		elif shape == "F":
+		elif name == "F":
 			self.shape = np.array([[0,1,1], [1,1,0], [0,1,0]]) * self.color
-		elif shape == "CROSS":
+		elif name == "CROSS":
 			self.shape = np.array([[0,1,0], [1,1,1], [0,1,0]]) * self.color
-		elif shape == "BIRD":
+		elif name == "BIRD":
 			self.shape = np.array([[0,1,0,0], [1,1,1,1]]) * self.color
 
 	def rotate(self):
-		self.shape = np.array(list(zip(*self.shape[::-1]) * self.color))
+		self.shape = np.array(list(zip(*self.shape[::-1])))
 
 	def flip(self):
 		self.shape = np.flip(self.shape, 0)
@@ -62,3 +63,8 @@ class Piece:
 
 	def get_color(self):
 		return self.color
+
+	def get_name(self):
+		return self.name
+
+
