@@ -24,7 +24,7 @@ class Board:
 
 		if x + px > self.size or y + py > self.size: #Piece off the edge of the board
 			return False
-		if np.any(self.board[x:x+px,y:y+py] & piece.get_shape()): #Piece on top of another piece
+		if len(np.nonzero(self.board[x:x+px,y:y+py] * piece.get_shape())[0]) > 0: #Piece on top of another piece
 			return False
 		for i in self.generate_adjacents(shape_coords): #Piece adjacent to same color
 			if i[0] < self.size and i[0] >= 0 and i[1] < self.size and i[1] >= 0 and self.board[i] == p_color:
@@ -56,3 +56,6 @@ class Board:
 
 		#print(corners - self.generate_adjacents(shape_coords)) #true corners
 		return corners
+
+	def get_board(self):
+		return self.board

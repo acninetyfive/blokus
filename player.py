@@ -12,7 +12,13 @@ class Player:
 			'S', 'LONG_L', 'LONG_T', 'LONG_CORNER', 'RIFLE',
 			'Z', 'UTAH', 'W', 'U', 'F', 'CROSS', 'BIRD'
 			]}
-		for p in self.pieces:
-			print(self.pieces[p].get_name())
-			print(self.pieces[p].get_shape())
-			print()
+
+	def get_name(self):
+		return self.name
+
+	def get_pieces(self):
+		return self.pieces
+
+	def del_piece(self, p):
+		if p in self.pieces:
+			del self.pieces[p]
