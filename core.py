@@ -30,9 +30,9 @@ HEIGHT = 20
 # This sets the margin between each cell
 MARGIN = 3
  
-size = 10
+size = 20
 
-game_board = Board(size)
+
 background = pygame.rect.Rect(0, 0, (HEIGHT + MARGIN) * size + MARGIN, (WIDTH + MARGIN) * size + MARGIN)
  
 # Initialize pygame
@@ -51,8 +51,9 @@ done = False
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-player_list = [Player("Gabe", 1), Player("Kevin", 2), Player("Alissa", 3)]
+player_list = [Player("Gabe", 1), Player("Kevin", 2), Player("Alissa", 3), Player("Guest", 4)]
 empty_players = []
+game_board = Board(size, [1,2,3,4])
 
 active_player = 0
 available_pieces = player_list[active_player].get_pieces()
