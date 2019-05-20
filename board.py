@@ -63,6 +63,13 @@ class Board:
 
 		#print(corners - self.generate_adjacents(shape_coords)) #true corners
 		return corners
+	
+	def get_color_corners(self, color): #NEEDS DEBUG
+		print("color", color)
+		one_color_board = np.array(self.board == color, dtype="int") * color
+		corner_board = convolve(one_color_board, self.c, mode='constant') - 20 * convolve(one_color_board, self.a, mode='constant')
+		
+		return np.array(np.where(corner_board >= 1))
 
 	def get_board(self):
 		return self.board
