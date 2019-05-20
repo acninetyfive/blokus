@@ -21,11 +21,6 @@ class Board:
 		p_shape = piece.get_shape()
 		px, py = p_shape.shape
 		self.board[x:x + px, y:y+py] += p_shape
-		s = time.perf_counter()
-		for _ in range(10000):
-			self.valid_move(piece, x, y)
-		t = time.perf_counter()
-		print(t-s, "for 10,000 runs")
 		return True
 
 	def valid_move(self, piece, x, y):

@@ -53,6 +53,7 @@ clock = pygame.time.Clock()
 
 player_list = [Player("Gabe", 1), Player("Kevin", 2), Player("Alissa", 3), Player("Guest", 4)]
 empty_players = []
+finished_players = []
 game_board = Board(size, [1,2,3,4])
 
 active_player = 0
@@ -94,7 +95,7 @@ def pass_turn(a_p):
 
 # -------- Main Program Loop -----------
 while not done:
-    if empty_players == player_list:
+    if finished_players == player_list:
         done == True
 
     for event in pygame.event.get():  # User did something
@@ -112,11 +113,10 @@ while not done:
                 if game_board.add_piece(active_piece, row, column):
                     player_list[active_player].del_piece(active_piece.get_name())
                     available_pieces = player_list[active_player].get_pieces()
-                    if len(available_pieces) > 0:
-                        active_piece = available_pieces[list(available_pieces)[0]]
-                    else:
+                    if len(available_pieces) == 0:
                         active_piece = None
                         empty_players.append(active_player)
+                        finished_players.append(active_player)
                     active_player = pass_turn(active_player)
                     available_pieces = player_list[active_player].get_pieces()
                     p_num = 0
@@ -131,9 +131,11 @@ while not done:
                 active_piece.flip()
             if event.key == pygame.K_RIGHT:
                 p_num = (p_num + 1) % len(available_pieces)
+                active_piece.reset()
                 active_piece = available_pieces[list(available_pieces)[p_num]]
             if event.key == pygame.K_LEFT:
                 p_num = (p_num - 1) % len(available_pieces)
+                active_piece.reset()
                 active_piece = available_pieces[list(available_pieces)[p_num]]
 
         '''elif event.type == pygame.MOUSEBUTTONDOWN:
