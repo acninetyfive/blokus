@@ -16,6 +16,9 @@ class Player:
 	def get_name(self):
 		return self.name
 
+	def get_color(self):
+		return self.color
+
 	def get_pieces(self):
 		return self.pieces
 

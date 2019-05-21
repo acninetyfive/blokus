@@ -13,7 +13,7 @@ class Board:
 		self.corners_and_adjacents = np.zeros((size,size), dtype = int)
 		self.corners_and_adjacents[[0,0,size-1,size-1],[0,size-1,0,size-1]] = [1,2,3,4]	
 		self.c = [[1,0,1],[0,0,0],[1,0,1]]
-		self.a = [[0,1,0],[1,0,1],[0,1,0]]	
+		self.a = [[0,1,0],[1,1,1],[0,1,0]]	
 
 	def add_piece(self, piece, x, y):
 		if not self.valid_move(piece, x, y):
@@ -64,12 +64,34 @@ class Board:
 		#print(corners - self.generate_adjacents(shape_coords)) #true corners
 		return corners
 	
-	def get_color_corners(self, color): #NEEDS DEBUG
-		print("color", color)
+	def get_color_corners(self, color): 
 		one_color_board = np.array(self.board == color, dtype="int") * color
-		corner_board = convolve(one_color_board, self.c, mode='constant') - 20 * convolve(one_color_board, self.a, mode='constant')
-		
+		corner_board = convolve(one_color_board, self.c, mode='constant') - 20 * convolve(one_color_board, self.a, mode='constant') - 20 * self.board
 		return np.array(np.where(corner_board >= 1))
+
+	def get_moves_list(self, player, corners):
+		playable_moves = []
+		pcs = player.get_pieces()
+		for p in pcs:
+			moves = pcs[p].get_legal_moves()
+			for m in moves:
+				pcs[p].reset()
+				for c in m:
+					if c == 'r':
+						pcs[p].rotate()
+					elif c == 'f':
+						pcs[p].flip()
+				for i in moves[m]:
+					for j in range(len(corners[0])):
+						x = corners[0,j]+i[0]
+						if x < 0 or x > self.size - 1:
+							break
+						y = corners[1,j]+i[1]
+						if y < 0 or y > self.size - 1:
+							break
+						if self.valid_move(pcs[p],corners[0,j]+i[0],corners[1,j]+i[1]):
+							playable_moves.append((p, m, (corners[0,j]+i[0], corners[1,j]+i[1])))
+		return playable_moves
 
 	def get_board(self):
 		return self.board

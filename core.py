@@ -51,7 +51,7 @@ done = False
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-player_list = [Player("Gabe", 1), Player("Kevin", 2), Player("Alissa", 3), Player("Guest", 4)]
+player_list = [Player("Gabe", 1), Player("Kevin", 2), Player("Alissa", 3), Player("John V", 4)]
 empty_players = []
 finished_players = []
 game_board = Board(size, [1,2,3,4])
@@ -90,7 +90,15 @@ def draw_piece(piece, x, y):
                               HEIGHT])
 
 def pass_turn(a_p):
-    return (a_p + 1) % len(player_list)
+    n_p = (a_p + 1) % len(player_list)
+    next_player = player_list[n_p]
+    cnrs = game_board.get_color_corners(next_player.get_color())
+    print("Passing to player ", next_player.get_color())
+    tp = Piece(next_player.get_color(), 'ONE')
+    mvs = game_board.get_moves_list(next_player, cnrs)
+    for x in mvs:
+        print(x)
+    return n_p
 
 
 # -------- Main Program Loop -----------

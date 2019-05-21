@@ -20,7 +20,7 @@ for p in pcs:
 			elif c == 'f':
 				pcs[p].flip()
 		for i in moves[m]:
-			if not b.valid_move(pcs[p],7+i[0],7+i[1]):
+			if b.valid_move(pcs[p],7+i[0],7+i[1]):
 				print (p, m, i)
 				print(pcs[p].get_shape())
 
