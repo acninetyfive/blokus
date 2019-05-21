@@ -15,6 +15,7 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
+
 # Colors for each player
 color_dict = {
                 1 : BLUE,
@@ -52,10 +53,10 @@ done = False
 clock = pygame.time.Clock()
 
 player_list = [Player("Gabe", 1), Player("Kevin", 2), Player("Alissa", 3), Player("John V", 4)]
-empty_players = []
 finished_players = []
 game_board = Board(size, [1,2,3,4])
 
+turn_one = [True, True, True, True]
 active_player = 0
 available_pieces = player_list[active_player].get_pieces()
 p_num = 0
@@ -89,13 +90,27 @@ def draw_piece(piece, x, y):
                               WIDTH,
                               HEIGHT])
 
+def remove_player_and_pass_turn(p):
+    player = player_list[p]
+    finished_players.append(player)
+    player_list.remove(player)
+    if len(player_list) == 0:
+        return None
+    n_p = (p) % len(player_list)
+    return n_p
+
 def pass_turn(a_p):
+    if turn_one[a_p]:
+        turn_one[a_p] = False
     n_p = (a_p + 1) % len(player_list)
     next_player = player_list[n_p]
     cnrs = game_board.get_color_corners(next_player.get_color())
     print("Passing to player ", next_player.get_color())
     tp = Piece(next_player.get_color(), 'ONE')
     mvs = game_board.get_moves_list(next_player, cnrs)
+    if not turn_one[n_p]:
+        if len(mvs) == 0:
+            return remove_player_and_pass_turn(n_p)
     for x in mvs:
         print(x)
     return n_p
@@ -123,9 +138,11 @@ while not done:
                     available_pieces = player_list[active_player].get_pieces()
                     if len(available_pieces) == 0:
                         active_piece = None
-                        empty_players.append(active_player)
                         finished_players.append(active_player)
                     active_player = pass_turn(active_player)
+                    if active_player == None:
+                        input()
+                        done == True
                     available_pieces = player_list[active_player].get_pieces()
                     p_num = 0
                     active_piece = available_pieces[list(available_pieces)[p_num]]
@@ -188,8 +205,14 @@ while not done:
     if active_piece != None:
         draw_piece(active_piece, (HEIGHT + MARGIN) * size + MARGIN  + 80, 100)
     
+
     current_name = player_list[active_player].get_name()
     message_display(current_name, (HEIGHT + MARGIN) * size + MARGIN  + 125, 50, 25)
+
+    message_display("Finished players", (HEIGHT + MARGIN) * size + MARGIN  + 125, 500, 25)
+    for i in range(len(finished_players)):
+        current_name = finished_players[i].get_name()
+        message_display(current_name, (HEIGHT + MARGIN) * size + MARGIN  + 125, 500 + 30 * i + 1, 25)
 
     pygame.display.flip()
  
