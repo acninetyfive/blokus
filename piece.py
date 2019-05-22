@@ -56,6 +56,7 @@ class Piece:
 		elif self.name == "BIRD":
 			self.shape = np.array([[0,1,0,0], [1,1,1,1]]) * self.color
 		
+		
 	def set_legal_moves(self):
 		if self.name == "ONE": 
 			self.legal_moves = {
@@ -217,32 +218,34 @@ class Piece:
 			self.legal_moves[s] = [(x[0], x[1]) for x in np.transpose(np.array(np.where(final)) * -1)]
 			self.reset()
 
-
-
-
-
+			
 	def reset(self):
 		self.set_shape()
 
+		
 	def rotate(self):
 		self.shape = np.array(list(zip(*self.shape[::-1])))
 
+		
 	def flip(self):
 		self.shape = np.flip(self.shape, 0)
 
+		
 	def get_shape(self):
 		return self.shape
 
+	
 	def get_color(self):
 		return self.color
 
+	
 	def get_name(self):
 		return self.name
 
+	
 	def get_legal_moves(self):
 		return self.legal_moves
 
+	
 	def get_value(self): 
 		return self.value
-
-
