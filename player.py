@@ -25,3 +25,9 @@ class Player:
 	def del_piece(self, p):
 		if p in self.pieces:
 			del self.pieces[p]
+
+	def get_score(self):
+		score = 0
+		for p in self.pieces:
+			score += self.pieces[p].get_value()
+		return score

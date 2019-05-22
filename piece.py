@@ -9,6 +9,7 @@ class Piece:
 		self.name = name
 		self.set_shape()
 		self.set_legal_moves()
+		self.value = np.sum(self.shape > 0)
 		
 
 	def set_shape(self):
@@ -240,5 +241,8 @@ class Piece:
 
 	def get_legal_moves(self):
 		return self.legal_moves
+
+	def get_value(self): 
+		return self.value
 
 
