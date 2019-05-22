@@ -10,8 +10,6 @@ class Board:
 		self.board = np.zeros((size,size), dtype = int)
 		self.start_squares = [[0,0], [0, size-1], [size-1, 0], [size-1, size-1]]
 		self.player_colors = player_colors
-		self.corners_and_adjacents = np.zeros((size,size), dtype = int)
-		self.corners_and_adjacents[[0,0,size-1,size-1],[0,size-1,0,size-1]] = [1,2,3,4]	
 		self.c = [[1,0,1],[0,0,0],[1,0,1]]
 		self.a = [[0,1,0],[1,1,1],[0,1,0]]	
 
@@ -95,28 +93,4 @@ class Board:
 
 	def get_board(self):
 		return self.board
-
-	def c_v(self):
-		convolve(self.board, self.a, mode = 'constant')
-		convolve(self.board, self.c, mode = 'constant')
-		return
-
-	def generate_kernel(self, piece):
-		cnr = np.array([[1,0,1],[0,0,0],[1,0,1]])
-		adj = np.array([[0,1,0],[1,0,1],[0,1,0]])
-
-		p_shape = piece.get_shape()
-		px, py = p_shape.shape
-		embed_arr = np.zeros((px + 2, py + 2))
-		embed_arr[1:px + 1, 1:py + 1] = p_shape
-
-		p_a = convolve(embed_arr, adj, mode = 'constant')
-		p_c = convolve(embed_arr, cnr, mode = 'constant')
-
-		p_c[p_a > 0] = -10
-
-		kernel = np.flip(p_c, 0)
-		kernel = np.flip(kernel, 1)
-
-		return kernel
 
