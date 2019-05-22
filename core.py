@@ -4,8 +4,6 @@ from board import Board
 from piece import Piece
 from player import Player
 
-#rectangle = pygame.rect.Rect(176, 134, 17, 17)
-#rectangle_draging = False
 
 # Define some colors
 BLACK = (0, 0, 0)
@@ -15,7 +13,6 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
-
 
 # Colors for each player
 color_dict = {
@@ -31,7 +28,8 @@ HEIGHT = 20
  
 # This sets the margin between each cell
 MARGIN = 3
- 
+
+# This sets the number of cells (size x size)
 size = 20
 
 
@@ -45,10 +43,7 @@ WINDOW_SIZE = [(HEIGHT + MARGIN) * size + MARGIN  + 250, (WIDTH + MARGIN) * size
 screen = pygame.display.set_mode(WINDOW_SIZE)
  
 # Set title of screen
-pygame.display.set_caption("Array Backed Grid")
- 
-# Loop until the user clicks the close button.
-done = False
+pygame.display.set_caption("¡Blokus!")
  
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
@@ -91,7 +86,6 @@ def draw_piece(piece, x, y):
                               WIDTH,
                               HEIGHT])
 
-
 def pass_turn(a_p):
     if turn_one[a_p]:
         turn_one[a_p] = False
@@ -115,76 +109,72 @@ def pass_turn(a_p):
     #    print(x)
     return n_p
 
-
-# -------- Main Program Loop -----------
-while not done:
-
-    for event in pygame.event.get():  # User did something
-        if event.type == pygame.QUIT:  # If user clicked close
+def handle_event(event, done, active_piece, active_player):
+    if event.type == pygame.QUIT:  # If user clicked close
             done = True  # Flag that we are done so we exit this loop
 
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            # User clicks the mouse. Get the position
-            pos = pygame.mouse.get_pos()
-            # Change the x/y screen coordinates to grid coordinates
-            column = pos[0] // (WIDTH + MARGIN)
-            row = pos[1] // (HEIGHT + MARGIN)
+    elif event.type == pygame.MOUSEBUTTONDOWN:
+        # User clicks the mouse. Get the position
+        pos = pygame.mouse.get_pos()
+        # Change the x/y screen coordinates to grid coordinates
+        column = pos[0] // (WIDTH + MARGIN)
+        row = pos[1] // (HEIGHT + MARGIN)
 
-            if active_piece:
-                if game_board.add_piece(active_piece, row, column):
-                    player_list[active_player].del_piece(active_piece.get_name())
-                    available_pieces = player_list[active_player].get_pieces()
-                    if len(available_pieces) == 0:
-                        active_piece = None
-                        finished_players.append(active_player)
-                    active_player = pass_turn(active_player)
-                    if active_player == None:
-                        done = True
-                        break
-                    available_pieces = player_list[active_player].get_pieces()
-                    p_num = 0
-                    active_piece = available_pieces[list(available_pieces)[p_num]]
-
-            #print("Click ", pos, "Grid coordinates: ", row, column)
-
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_r:
-                active_piece.rotate()
-            if event.key == pygame.K_f:
-                active_piece.flip()
-            if event.key == pygame.K_RIGHT:
-                p_num = (p_num + 1) % len(available_pieces)
-                active_piece.reset()
-                active_piece = available_pieces[list(available_pieces)[p_num]]
-            if event.key == pygame.K_LEFT:
-                p_num = (p_num - 1) % len(available_pieces)
-                active_piece.reset()
+        if active_piece:
+            if game_board.add_piece(active_piece, row, column):
+                player_list[active_player].del_piece(active_piece.get_name())
+                available_pieces = player_list[active_player].get_pieces()
+                if len(available_pieces) == 0:
+                    active_piece = None
+                    finished_players.append(active_player)
+                active_player = pass_turn(active_player)
+                if active_player == None:
+                    done = True
+                    return done, active_piece, active_player
+                available_pieces = player_list[active_player].get_pieces()
+                p_num = 0
                 active_piece = available_pieces[list(available_pieces)[p_num]]
 
-        '''elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:            
-                if rectangle.collidepoint(event.pos):
-                    rectangle_draging = True
-                    mouse_x, mouse_y = event.pos
-                    offset_x = rectangle.x - mouse_x
-                    offset_y = rectangle.y - mouse_y
+        #print("Click ", pos, "Grid coordinates: ", row, column)
 
-        elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:            
-                rectangle_draging = False
+    elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_r:
+            active_piece.rotate()
+        if event.key == pygame.K_f:
+            active_piece.flip()
+        if event.key == pygame.K_RIGHT:
+            p_num = (p_num + 1) % len(available_pieces)
+            active_piece.reset()
+            active_piece = available_pieces[list(available_pieces)[p_num]]
+        if event.key == pygame.K_LEFT:
+            p_num = (p_num - 1) % len(available_pieces)
+            active_piece.reset()
+            active_piece = available_pieces[list(available_pieces)[p_num]]
 
-        elif event.type == pygame.MOUSEMOTION:
-            if rectangle_draging:
+    '''elif event.type == pygame.MOUSEBUTTONDOWN:
+        if event.button == 1:            
+            if rectangle.collidepoint(event.pos):
+                rectangle_draging = True
                 mouse_x, mouse_y = event.pos
-                rectangle.x = mouse_x + offset_x
-                rectangle.y = mouse_y + offset_y'''
+                offset_x = rectangle.x - mouse_x
+                offset_y = rectangle.y - mouse_y
 
+    elif event.type == pygame.MOUSEBUTTONUP:
+        if event.button == 1:            
+            rectangle_draging = False
 
-            
+    elif event.type == pygame.MOUSEMOTION:
+        if rectangle_draging:
+            mouse_x, mouse_y = event.pos
+            rectangle.x = mouse_x + offset_x
+            rectangle.y = mouse_y + offset_y'''
+
+    return done, active_piece, active_player
+
+def draw_screen():
     # Set the screen background
     screen.fill(WHITE)
     pygame.draw.rect(screen, BLACK, background)
-
 
     # Draw the grid
     grid = game_board.get_board()
@@ -200,23 +190,32 @@ while not done:
                               WIDTH,
                               HEIGHT])
 
-
     if active_piece != None:
         draw_piece(active_piece, (HEIGHT + MARGIN) * size + MARGIN  + 80, 100)
 
     if active_player != None:
         current_name = player_list[active_player].get_name()
-        message_display(current_name, (HEIGHT + MARGIN) * size + MARGIN  + 125, 50, 25)
-
-    
+        message_display(current_name, (HEIGHT + MARGIN) * size + MARGIN  + 125, 50, 25)    
 
     pygame.display.flip()
+
+    return 1
+
+
+# Loop until the user clicks the close button.
+done = False
+
+# -------- Main Program Loop -----------
+while not done:
+
+    for event in pygame.event.get():  # User did something
+        done, active_piece, active_player = handle_event(event, done, active_piece, active_player)
+
+    draw_screen()
  
     # Limit to 60 frames per second
     clock.tick(60)
- 
-    # Go ahead and update the screen with what we've drawn.
-    pygame.display.flip()
+
 
 # Be IDLE friendly. If you forget this line, the program will 'hang'
 # on exit.
