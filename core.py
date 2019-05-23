@@ -2,7 +2,7 @@ import pygame
 import sys
 from board import Board
 from piece import Piece
-from player import Player
+from players.humanPlayer import HumanPlayer
 
 
 # Define some colors
@@ -48,7 +48,7 @@ pygame.display.set_caption("¡Blokus!")
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-player_list = [Player("Gabe", 1), Player("Kevin", 2), Player("Alissa", 3), Player("John V", 4)]
+player_list = [HumanPlayer("Gabe", 1), HumanPlayer("Kevin", 2), HumanPlayer("Alissa", 3), HumanPlayer("John V", 4)]
 finished_players = []
 game_board = Board(size, [1,2,3,4])
 
