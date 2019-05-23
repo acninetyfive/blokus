@@ -109,7 +109,10 @@ def pass_turn(a_p):
     #    print(x)
     return n_p
 
-def handle_event(event, done, active_piece, active_player):
+def handle_event(event, done, p_num, active_piece, active_player):
+
+    available_pieces = player_list[active_player].get_pieces()
+
     if event.type == pygame.QUIT:  # If user clicked close
             done = True  # Flag that we are done so we exit this loop
 
@@ -169,7 +172,7 @@ def handle_event(event, done, active_piece, active_player):
             rectangle.x = mouse_x + offset_x
             rectangle.y = mouse_y + offset_y'''
 
-    return done, active_piece, active_player
+    return done, p_num, active_piece, active_player
 
 def draw_screen():
     # Set the screen background
@@ -209,7 +212,7 @@ done = False
 while not done:
 
     for event in pygame.event.get():  # User did something
-        done, active_piece, active_player = handle_event(event, done, active_piece, active_player)
+        done, p_num, active_piece, active_player = handle_event(event, done, p_num, active_piece, active_player)
 
     draw_screen()
  
