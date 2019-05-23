@@ -72,8 +72,8 @@ class Board:
 		pcs = player.get_pieces()
 		for p in pcs:
 			moves = pcs[p].get_legal_moves()
+			pcs[p].reset()
 			for m in moves:
-				pcs[p].reset()
 				for c in m:
 					if c == 'r':
 						pcs[p].rotate()
@@ -89,6 +89,7 @@ class Board:
 							break
 						if self.valid_move(pcs[p],corners[0,j]+i[0],corners[1,j]+i[1]):
 							playable_moves.append((p, m, (corners[0,j]+i[0], corners[1,j]+i[1])))
+				pcs[p].reset()
 		return playable_moves
 
 	def get_board(self):
