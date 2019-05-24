@@ -19,7 +19,7 @@ class RandomPlayer(ComputerPlayer):
 		return super().get_score()
 
 	def get_type(self):
-		return "computer"
+		return super().get_type()
 
 	#return a move to be played as a tuple: (piece, flip/rotation string, (x, y))
 	def get_move(self, board):
