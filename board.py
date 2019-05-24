@@ -70,6 +70,9 @@ class Board:
 	def get_moves_list(self, player, corners):
 		playable_moves = []
 		pcs = player.get_pieces()
+		if len(pcs) == 21: 
+			start_squares = np.array([[0,0,19,19],[0,19,0,19]])
+			corners = np.hstack((corners, start_squares))
 		for p in pcs:
 			moves = pcs[p].get_legal_moves()
 			pcs[p].reset()
