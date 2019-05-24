@@ -3,6 +3,7 @@ import sys
 from board import Board
 from piece import Piece
 from players.humanPlayer import HumanPlayer
+from players.randomPlayer import RandomPlayer
 
 
 # Define some colors
@@ -48,7 +49,7 @@ pygame.display.set_caption("¡Blokus!")
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-player_list = [HumanPlayer("Gabe", 1), HumanPlayer("Kevin", 2), HumanPlayer("Alissa", 3), HumanPlayer("John V", 4)]
+player_list = [HumanPlayer("Gabe", 1), RandomPlayer("Kevin", 2), RandomPlayer("Alissa", 3), RandomPlayer("John V", 4)]
 finished_players = []
 game_board = Board(size, [1,2,3,4])
 
@@ -105,8 +106,8 @@ def pass_turn(a_p):
             if len(finished_players) == len(player_list):
                 return None
             return pass_turn(n_p)
-    #for x in mvs:
-    #    print(x)
+    for x in mvs:
+        print(x)
     return n_p
 
 def handle_event(event, done, p_num, active_piece, active_player):
@@ -211,8 +212,32 @@ done = False
 # -------- Main Program Loop -----------
 while not done:
 
-    for event in pygame.event.get():  # User did something
-        done, p_num, active_piece, active_player = handle_event(event, done, p_num, active_piece, active_player)
+    player_type = player_list[active_player].get_type()
+
+    if player_type == "human":
+        for event in pygame.event.get():  # User did something
+            done, p_num, active_piece, active_player = handle_event(event, done, p_num, active_piece, active_player)
+    else:
+        move = player_list[active_player].get_move(game_board)
+        piece = player_list[active_player].get_pieces()[move[0]]
+        piece.reset()
+        for c in move[1]:
+            if c == 'r':
+                piece.rotate()
+            elif c == 'f':
+                piece.flip()
+        if game_board.add_piece(piece, move[2][0], move[2][1]):
+            player_list[active_player].del_piece(piece.get_name())
+            available_pieces = player_list[active_player].get_pieces()
+            if len(available_pieces) == 0:
+                active_piece = None
+                finished_players.append(active_player)
+            active_player = pass_turn(active_player)
+            if active_player == None:
+                    done = True
+            available_pieces = player_list[active_player].get_pieces()
+            p_num = 0
+            active_piece = available_pieces[list(available_pieces)[p_num]]
 
     draw_screen()
  
