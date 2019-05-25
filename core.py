@@ -256,9 +256,11 @@ print("quit")
 input()
 pygame.quit()
 
-
-for p in player_list:
-    print(p.get_name(), "scored", p.get_score())
+scores = [(p.get_name(), p.get_score()) for p in player_list]
+scores = sorted(scores, key=lambda x: x[1])
+for x in scores:
+    print(x[0], "scored", x[1])
+print(scores[0][0], "won!")
 
  
 
