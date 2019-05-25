@@ -28,11 +28,14 @@ class Board:
 		shape_coords = np.argwhere(p_shape != 0) + [x,y]
 
 		if x + px > self.size or y + py > self.size: #Piece off the edge of the board
+			#print("Piece off the edge of the board")
 			return False
 		if len(np.nonzero(self.board[x:x+px,y:y+py] * piece.get_shape())[0]) > 0: #Piece on top of another piece
+			#print("Piece on top of another")
 			return False
 		for i in self.generate_adjacents(shape_coords): #Piece adjacent to same color
 			if i[0] < self.size and i[0] >= 0 and i[1] < self.size and i[1] >= 0 and self.board[i] == p_color:
+				#print("piece adjacent to the same color")
 				return False
 		for i in self.generate_corners(shape_coords): #Piece is touching a corner
 			if i[0] < self.size and i[0] >= 0 and i[1] < self.size and i[1] >= 0 and self.board[i] == p_color:
@@ -40,6 +43,7 @@ class Board:
 		for x in shape_coords:
 			if list(x) in self.start_squares:
 				return True
+		#print("else")
 		return False
 
 	def generate_adjacents(self, shape_coords):
@@ -83,15 +87,17 @@ class Board:
 					elif c == 'f':
 						pcs[p].flip()
 				for i in moves[m]:
+					shp = pcs[p].get_shape()
 					for j in range(len(corners[0])):
 						x = corners[0,j]+i[0]
-						if x < 0 or x > self.size - 1:
-							break
 						y = corners[1,j]+i[1]
-						if y < 0 or y > self.size - 1:
-							break
-						if self.valid_move(pcs[p],corners[0,j]+i[0],corners[1,j]+i[1]):
-							playable_moves.append((p, m, (corners[0,j]+i[0], corners[1,j]+i[1])))
+						if x < 0 or x > self.size - 1:
+							pass
+						elif y < 0 or y > self.size - 1:
+							pass
+						elif self.valid_move(pcs[p],x,y):
+							playable_moves.append((p, m, x, y))
+
 				pcs[p].reset()
 		return playable_moves
 

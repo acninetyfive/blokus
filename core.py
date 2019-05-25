@@ -49,7 +49,7 @@ pygame.display.set_caption("¡Blokus!")
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-player_list = [HumanPlayer("Gabe", 1), RandomPlayer("Kevin", 2), RandomPlayer("Alissa", 3), RandomPlayer("John V", 4)]
+player_list = [RandomPlayer("Gabe", 1), RandomPlayer("Kevin", 2), RandomPlayer("Alissa", 3), RandomPlayer("John V", 4)]
 finished_players = []
 game_board = Board(size, [1,2,3,4])
 
@@ -108,6 +108,7 @@ def pass_turn(a_p):
             return pass_turn(n_p)
     for x in mvs:
         print(x)
+
     return n_p
 
 def handle_event(event, done, p_num, active_piece, active_player):
@@ -226,7 +227,9 @@ while not done:
                 piece.rotate()
             elif c == 'f':
                 piece.flip()
-        if game_board.add_piece(piece, move[2][0], move[2][1]):
+        print("move")
+        print(move)
+        if game_board.add_piece(piece, move[2], move[3]):
             player_list[active_player].del_piece(piece.get_name())
             available_pieces = player_list[active_player].get_pieces()
             if len(available_pieces) == 0:
@@ -235,9 +238,10 @@ while not done:
             active_player = pass_turn(active_player)
             if active_player == None:
                     done = True
-            available_pieces = player_list[active_player].get_pieces()
-            p_num = 0
-            active_piece = available_pieces[list(available_pieces)[p_num]]
+            else:
+                available_pieces = player_list[active_player].get_pieces()
+                p_num = 0
+                active_piece = available_pieces[list(available_pieces)[p_num]]
 
     draw_screen()
  

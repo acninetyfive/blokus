@@ -1,4 +1,5 @@
 from players.randomPlayer import RandomPlayer
+from players.humanPlayer import HumanPlayer
 from board import Board
 from piece import Piece
 import time
@@ -83,5 +84,3 @@ print("time", t-s)
 print("time per run", (t-s)/runs)
 
 print("Done")
-
-
