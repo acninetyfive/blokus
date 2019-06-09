@@ -1,7 +1,7 @@
 import random
 from players.computerPlayer import ComputerPlayer
 
-class BigPiecePlayer(ComputerPlayer):
+class Player(ComputerPlayer):
 	
 	def __init__(self, name, color):
 		super().__init__(name, color)

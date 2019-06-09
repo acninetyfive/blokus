@@ -1,9 +1,21 @@
 import pygame
 import sys
+import importlib
 from board import Board
 from piece import Piece
-from players.humanPlayer import HumanPlayer
-from players.randomPlayer import RandomPlayer
+
+# Import players
+if not (len(sys.argv) == 1 or len(sys.argv) == 9):
+    print("Please specify either 4 or 0 players!")
+    exit(1)
+if len(sys.argv) == 1:
+    RandomPlayer = importlib.import_module("players.randomPlayer").Player
+    player_list = [RandomPlayer("Gabe", 1), RandomPlayer("Kevin", 2), RandomPlayer("Alissa", 3), RandomPlayer("John V", 4)]
+else:
+    player_list = []
+    for i, color in zip(range(1, 9, 2), range(1, 5)):
+        Player = importlib.import_module(f"players.{sys.argv[i + 1]}").Player
+        player_list.append(Player(sys.argv[i], color))
 
 
 # Define some colors
@@ -49,7 +61,6 @@ pygame.display.set_caption("¡Blokus!")
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-player_list = [RandomPlayer("Gabe", 1), RandomPlayer("Kevin", 2), RandomPlayer("Alissa", 3), RandomPlayer("John V", 4)]
 finished_players = []
 game_board = Board(size, [1,2,3,4])
 
