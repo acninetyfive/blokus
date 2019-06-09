@@ -151,8 +151,6 @@ def handle_event(event, done, p_num, active_piece, active_player):
                 p_num = 0
                 active_piece = available_pieces[list(available_pieces)[p_num]]
 
-        #print("Click ", pos, "Grid coordinates: ", row, column)
-
     elif event.type == pygame.KEYDOWN:
         if event.key == pygame.K_r:
             active_piece.rotate()
@@ -166,24 +164,6 @@ def handle_event(event, done, p_num, active_piece, active_player):
             p_num = (p_num - 1) % len(available_pieces)
             active_piece.reset()
             active_piece = available_pieces[list(available_pieces)[p_num]]
-
-    '''elif event.type == pygame.MOUSEBUTTONDOWN:
-        if event.button == 1:            
-            if rectangle.collidepoint(event.pos):
-                rectangle_draging = True
-                mouse_x, mouse_y = event.pos
-                offset_x = rectangle.x - mouse_x
-                offset_y = rectangle.y - mouse_y
-
-    elif event.type == pygame.MOUSEBUTTONUP:
-        if event.button == 1:            
-            rectangle_draging = False
-
-    elif event.type == pygame.MOUSEMOTION:
-        if rectangle_draging:
-            mouse_x, mouse_y = event.pos
-            rectangle.x = mouse_x + offset_x
-            rectangle.y = mouse_y + offset_y'''
 
     return done, p_num, active_piece, active_player
 
@@ -259,10 +239,6 @@ while not done:
     # Limit to 60 frames per second
     clock.tick(60)
 
-
-# Be IDLE friendly. If you forget this line, the program will 'hang'
-# on exit.
-#pygame.display.quit()
 print("quit")
 input()
 pygame.quit()
