@@ -4,7 +4,7 @@ Owner: Gabe Stanton
 
 ## Requirements
 
-- python 3.*.*
+- python 3.\*.\*
 
 ## Install Dependencies
 
