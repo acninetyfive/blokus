@@ -2,12 +2,51 @@ import numpy as np
 from piece import Piece
 import time
 
-class TrieNode:
+class Trie:
+	def __init__(self):
+		self.root = TrieNode("root", None)
 
-	def __init__(self, value):
-		self.value = ("piece", "orientation", "move")
-		self.point = ("x", "y")
-		self.children = []
+	def get_root(self):
+		return self.root
+
+	def add_node(self, points, value):
+		p = 0
+		node = self.root
+		while points[p] in node.get_children():
+			node = node.get_children()[points[p]]
+			p += 1
+			if p == len(points):
+				node.set_value(value)
+				return node
+		while p < len(points) - 1:
+			node = node.add_child(None, points[p])
+			p += 1
+		node.add_child(value, points[p])
+		return node
+
+
+
+class TrieNode:
+	def __init__(self, value, point):
+		self.value = value
+		self.point = point
+		self.children = {}
+
+	def get_value(self):
+		return self.value
+
+	def set_value(self, value):
+		self.value = value
+
+	def get_point(self):
+		return self.point
+
+	def get_children(self):
+		return self.children
+
+	def add_child(self, value, point):
+		self.children[point] = TrieNode(value, point)
+		return self.children[point]
 
 
 
@@ -74,7 +113,12 @@ def build_points_to_piece_dict(pc_to_pts):
 
 
 def trie_from_dict(pts_dict):
-	pass
+	trie = Trie()
+	for key in pts_dict:
+		trie.add_node(key, pts_dict[key])
+	return trie
+
+	
 
 
 t = time.perf_counter()
@@ -89,9 +133,21 @@ piece_to_points_dict = build_piece_to_points_dict(pieces)
 
 points_to_piece_dict = build_points_to_piece_dict(piece_to_points_dict)
 
-print(time.perf_counter() - t)
+#print(time.perf_counter() - t)
 
-for k in sorted(points_to_piece_dict, key=len):
-	print(k, points_to_piece_dict[k])
+#for x in points_to_piece_dict:
+#	print(x, points_to_piece_dict[x])
 
+#print(points_to_piece_dict[((0,0),)])
 
+my_trie = trie_from_dict(points_to_piece_dict)
+
+#my_trie.add_node(((0,0),), points_to_piece_dict[((0,0),)])
+'''
+my_trie.add_node(((0, 0), (0, 1)), points_to_piece_dict[((0, 0), (0, 1))])
+my_trie.add_node(((0,0),), points_to_piece_dict[((0,0),)])
+
+for x in my_trie.get_root().get_children():
+	print(x, my_trie.get_root().get_children()[x].get_value())
+	print(my_trie.get_root().get_children()[x].get_children())
+'''
