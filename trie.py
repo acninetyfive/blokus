@@ -82,6 +82,35 @@ def dfs(shape, start):
 	relative_visited = [(x[0] - start[0], x[1] - start[1]) for x in visited] #list each visited node's coordinates relative to the "corner" spot
 
 	return relative_visited
+
+
+def trie_dfs(trie):
+	root = trie.get_root()
+	visited = []
+	stack = [root]
+
+	while stack:
+		node = stack.pop()
+		visited.append(node)
+		children = node.get_children()
+		for n in children:
+			stack.append(children[n])
+
+	return visited
+
+def trie_bfs(trie):
+	root = trie.get_root()
+	visited = []
+	queue = [root]
+
+	while queue:
+		node = queue.pop(0)
+		visited.append(node)
+		children = node.get_children()
+		for n in children:
+			queue.append(children[n])
+
+	return visited
 	
 
 def build_piece_to_points_dict(pieces):
@@ -121,6 +150,8 @@ def trie_from_dict(pts_dict):
 	
 
 
+
+
 t = time.perf_counter()
 pieces = {t:Piece(1, t) for t in [
 			'ONE', 'TWO', 'THREE', 'FOUR', "FIVE",
@@ -133,21 +164,11 @@ piece_to_points_dict = build_piece_to_points_dict(pieces)
 
 points_to_piece_dict = build_points_to_piece_dict(piece_to_points_dict)
 
-#print(time.perf_counter() - t)
-
-#for x in points_to_piece_dict:
-#	print(x, points_to_piece_dict[x])
-
-#print(points_to_piece_dict[((0,0),)])
-
 my_trie = trie_from_dict(points_to_piece_dict)
 
-#my_trie.add_node(((0,0),), points_to_piece_dict[((0,0),)])
-'''
-my_trie.add_node(((0, 0), (0, 1)), points_to_piece_dict[((0, 0), (0, 1))])
-my_trie.add_node(((0,0),), points_to_piece_dict[((0,0),)])
+t = trie_bfs(my_trie)
 
-for x in my_trie.get_root().get_children():
-	print(x, my_trie.get_root().get_children()[x].get_value())
-	print(my_trie.get_root().get_children()[x].get_children())
-'''
+for n in t:
+	print(n.get_point(), n.get_value())
+print(len(t))
+#print(time.perf_counter() - t)
