@@ -50,18 +50,17 @@ class TrieNode:
 
 
 
-def dfs(shape, start):
-	if shape[start] == 0:
+def get_points_from_shape(shape, start):
+	if shape[start] == 0: #not valid starting spot
 		return None
 	start = tuple(start)
 	visited = []
 	stack = [start]
-	#print(shape)
 
 	while stack:
 		cur = stack.pop()
 		visited.append(cur)
-		#print(cur)
+
 		if cur[0] > 0:
 			if shape[cur[0] - 1, cur[1]] != 0 and (cur[0] - 1, cur[1]) not in visited and (cur[0] - 1, cur[1]) not in stack:
 				stack.append((cur[0] - 1, cur[1]))
@@ -74,10 +73,6 @@ def dfs(shape, start):
 		if cur[1] < len(shape[0]) - 1:
 			if shape[cur[0], cur[1] + 1] != 0 and (cur[0], cur[1] + 1) not in visited and (cur[0], cur[1] + 1) not in stack:
 				stack.append((cur[0], cur[1] + 1))
-		#print("visited", visited)
-		#print("stack", stack)
-		#print()
-
 
 	relative_visited = [(x[0] - start[0], x[1] - start[1]) for x in visited] #list each visited node's coordinates relative to the "corner" spot
 
@@ -127,7 +122,7 @@ def build_piece_to_points_dict(pieces):
 				elif c == 'f':
 					pieces[p].flip()
 			for pos in mvs[m]:
-				d[pname][m][pos] = dfs(pieces[p].get_shape(), (pos[0] * -1, pos[1] * -1))
+				d[pname][m][pos] = get_points_from_shape(pieces[p].get_shape(), (pos[0] * -1, pos[1] * -1))
 			pieces[p].reset()
 	return d
 
@@ -148,11 +143,6 @@ def trie_from_dict(pts_dict):
 	return trie
 
 	
-
-
-
-
-t = time.perf_counter()
 pieces = {t:Piece(1, t) for t in [
 			'ONE', 'TWO', 'THREE', 'FOUR', "FIVE",
 			'SHORT_CORNER', 'SQUARE', 'SHORT_T', 'SHORT_L',
@@ -166,9 +156,8 @@ points_to_piece_dict = build_points_to_piece_dict(piece_to_points_dict)
 
 my_trie = trie_from_dict(points_to_piece_dict)
 
-t = trie_bfs(my_trie)
+nodes_list = trie_bfs(my_trie)
 
-for n in t:
+for n in nodes_list:
 	print(n.get_point(), n.get_value())
-print(len(t))
-#print(time.perf_counter() - t)
+
