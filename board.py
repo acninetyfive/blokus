@@ -14,8 +14,8 @@ class Board:
 		self.a = [[0,1,0],[1,1,1],[0,1,0]]	
 
 	def add_piece(self, piece, x, y):
-		if not self.valid_move(piece, x, y):
-			return False
+		#if not self.valid_move(piece, x, y):
+		#	return False
 		p_shape = piece.get_shape()
 		px, py = p_shape.shape
 		self.board[x:x + px, y:y+py] += p_shape
@@ -69,7 +69,8 @@ class Board:
 	def get_color_corners(self, color): 
 		one_color_board = np.array(self.board == color, dtype="int") * color
 		corner_board = convolve(one_color_board, self.c, mode='constant') - 20 * convolve(one_color_board, self.a, mode='constant') - 20 * self.board
-		return np.array(np.where(corner_board >= 1))
+		corner_board -= self.board * 20
+		return np.array(np.where(corner_board >= 1)), corner_board
 
 	def get_moves_list(self, player, corners):
 		playable_moves = []
