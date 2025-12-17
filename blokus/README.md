@@ -14,7 +14,7 @@ Owner: Gabe Stanton
 
 - `python core.py`
 - `python core.py <player 1 name> <player 1 file name> ...`
-  - e.g: `python core.py kevin randomPlayer gabe randomPlayer alissa randomPlayer john bigPiecePlayer`
+  - e.g: `python3 core.py kevin randomPlayer gabe randomPlayer alissa randomPlayer john bigPiecePlayer`
 
 ## Creating a Player
 

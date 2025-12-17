@@ -1,5 +1,5 @@
 import numpy as np
-from piece import Piece
+from ..piece import Piece
 from abc import ABC
 
 class BasePlayer:

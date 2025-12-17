@@ -1,5 +1,5 @@
 import random
-from players.computerPlayer import ComputerPlayer
+from .computerPlayer import ComputerPlayer
 
 class Player(ComputerPlayer):
 	

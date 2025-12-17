@@ -1,4 +1,4 @@
-from players.basePlayer import BasePlayer
+from .basePlayer import BasePlayer
 
 class Player(BasePlayer):
 	
